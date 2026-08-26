@@ -8,6 +8,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory) // no Dock icon, menu bar only
 
+        guard !anotherCopyIsRunning() else {
+            // A second paw in the menu bar with no way to tell them apart is
+            // just confusing, so the newcomer bows out.
+            NSApp.terminate(nil)
+            return
+        }
+
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         if let button = item.button {
             let image = NSImage(systemSymbolName: "pawprint.fill", accessibilityDescription: "DeskPet")
@@ -44,6 +51,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     #if PEEK_DEV
     private var clickTest: ClickSelfTest?
     #endif
+
+    /// True when a different process is already running this same app —
+    /// which happens after an upgrade if an older copy is still open from
+    /// another folder.
+    private func anotherCopyIsRunning() -> Bool {
+        #if PEEK_DEV
+        // The development checks drive the app directly and may overlap with
+        // a copy the developer already has running.
+        if ProcessInfo.processInfo.environment.keys.contains(where: { $0.hasPrefix("PEEK_") }) {
+            return false
+        }
+        #endif
+        guard let id = Bundle.main.bundleIdentifier else { return false }
+        let mine = ProcessInfo.processInfo.processIdentifier
+        return NSRunningApplication
+            .runningApplications(withBundleIdentifier: id)
+            .contains { $0.processIdentifier != mine }
+    }
 
     private func buildMenu() -> NSMenu {
         let menu = NSMenu()

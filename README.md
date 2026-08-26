@@ -13,6 +13,11 @@ settings to configure. macOS 13 or later.
 
 **[Download the latest release →](../../releases/latest)**
 
+On that page, grab the file ending in **`-macOS-app.zip`**. (GitHub also
+lists *Source code (zip)* and *Source code (tar.gz)* on every release — those
+are the code, not something you can open. You only want those if you're
+[building it yourself](#for-developers).)
+
 1. Unzip and drag `CatsAndDogsPeek.app` to your **Applications** folder.
 2. Double-click it. **macOS will refuse to open it the first time** — this is
    expected, see [below](#why-macos-blocks-the-first-launch).

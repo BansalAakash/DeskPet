@@ -87,6 +87,7 @@ Needs the Swift toolchain — Xcode, or `xcode-select --install`.
 | `Scripts/build_app.sh` | Build `CatsAndDogsPeek.app` (`--dev` adds the checks below) |
 | `Scripts/run_tests.sh` | Build with checks, run them all, rebuild clean |
 | `Scripts/package.sh` | Build + zip for a release |
+| `Scripts/release.sh` | Package and publish a GitHub release (`v1.0`) |
 | `Scripts/gen_gestures.py` | Regenerate every sprite from the source art |
 
 ### How it's put together

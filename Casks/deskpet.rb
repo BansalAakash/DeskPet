@@ -1,6 +1,6 @@
 cask "deskpet" do
   version "1.1"
-  sha256 "b35faef9006abe1ace6bd819ba804b0fe06b5e7960cc1e77e65a4c6bd0055ac6"
+  sha256 "714ff3794b94a41b58afb7849c7e33718f1af56b69697b03529270eb664de5e8"
 
   url "https://github.com/BansalAakash/DeskPet/releases/download/v#{version}/DeskPet-v#{version}-macOS-app.zip",
       verified: "github.com/BansalAakash/DeskPet/"
@@ -19,14 +19,12 @@ cask "deskpet" do
   ]
 
   caveats <<~EOS
-    DeskPet is signed ad-hoc rather than notarised by Apple, so Homebrew's
-    quarantine flag will make macOS refuse the first launch. Either install
-    with:
+    DeskPet is signed ad-hoc rather than notarised by Apple, so macOS will
+    refuse the first launch. Approve it once:
 
-      brew install --cask --no-quarantine deskpet
+      System Settings > Privacy & Security > scroll down > Open Anyway
 
-    or approve it once in System Settings > Privacy & Security.
-
-    To avoid the question entirely, build it yourself — see the README.
+    Every launch after that is normal. To skip the question entirely, build
+    it from source instead — see the README.
   EOS
 end

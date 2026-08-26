@@ -19,16 +19,20 @@ you to run something unseen.
 
 ```sh
 brew tap BansalAakash/deskpet https://github.com/BansalAakash/DeskPet
-brew install --cask --no-quarantine deskpet
+brew trust --cask BansalAakash/deskpet/deskpet
+brew install --cask deskpet
 ```
 
 Homebrew downloads the release, checks it against a SHA-256 pinned in
 [`Casks/deskpet.rb`](Casks/deskpet.rb), and refuses to install if a single
 byte differs. The cask is a short, readable file in this repo — worth
-[reading first](Casks/deskpet.rb).
+[reading first](Casks/deskpet.rb). The `brew trust` step is Homebrew making
+you say out loud that you trust this tap; it won't install from a
+third-party tap otherwise.
 
-`--no-quarantine` skips the Gatekeeper prompt. Leave it off if you'd rather
-approve the app yourself in System Settings → Privacy & Security.
+You'll still need to approve the app once, since it isn't notarised: **System
+Settings → Privacy & Security → Open Anyway**. Every launch after that is
+normal.
 
 Update with `brew upgrade --cask deskpet`, remove with
 `brew uninstall --cask deskpet`.

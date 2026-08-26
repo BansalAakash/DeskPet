@@ -73,7 +73,7 @@ It draws in a transparent, click-through overlay and does nothing else.
 Plain SwiftUI + AppKit, no third-party dependencies.
 
 ```sh
-git clone https://github.com/USER/CatsAndDogsPeek.git
+git clone https://github.com/BansalAakash/CatsAndDogsPeek.git
 cd CatsAndDogsPeek
 ./Scripts/build_app.sh && open CatsAndDogsPeek.app
 ```

@@ -2,7 +2,9 @@
 # Prints a short summary of why DeskPet quit, small enough to read off the
 # screen or photograph.
 #
-#   curl -fsSL https://raw.githubusercontent.com/BansalAakash/DeskPet/main/Scripts/diagnose.sh | bash
+# Run it from a checkout you have looked at:
+#   git clone https://github.com/BansalAakash/DeskPet.git
+#   cd DeskPet && ./Scripts/diagnose.sh
 set -uo pipefail
 
 printf '\n\033[1m== DeskPet diagnosis ==\033[0m\n\n'

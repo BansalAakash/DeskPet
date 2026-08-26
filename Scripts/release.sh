@@ -55,7 +55,7 @@ EOF
 if gh release view "$TAG" >/dev/null 2>&1; then
     echo "Updating existing release $TAG..."
     gh release upload "$TAG" "$ASSET" --clobber
-    gh release edit "$TAG" --notes "$NOTES"
+    gh release edit "$TAG" --title "DeskPet $TAG" --notes "$NOTES"
 else
     gh release create "$TAG" "$ASSET" \
         --title "DeskPet $TAG" \

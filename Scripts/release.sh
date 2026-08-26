@@ -21,9 +21,9 @@ fi
 # release and there's no way to turn them off. They're a similar size to the
 # app, so the app's file name has to say plainly what it is — otherwise
 # people download the source by mistake and find nothing to open.
-ASSET="CatsAndDogsPeek-${TAG}-macOS-app.zip"
+ASSET="DeskPet-${TAG}-macOS-app.zip"
 rm -f "$ASSET"
-cp CatsAndDogsPeek.zip "$ASSET"
+cp DeskPet.zip "$ASSET"
 
 NOTES=$(cat <<EOF
 ## Download
@@ -37,7 +37,7 @@ open.
 
 ## Install
 
-1. Download **\`$ASSET\`**, unzip it, and drag \`CatsAndDogsPeek.app\` to your
+1. Download **\`$ASSET\`**, unzip it, and drag \`DeskPet.app\` to your
    **Applications** folder.
 2. Double-click it — **macOS will refuse to open it the first time.**
 3. Open  → **System Settings → Privacy & Security**, scroll to the bottom,
@@ -58,7 +58,7 @@ if gh release view "$TAG" >/dev/null 2>&1; then
     gh release edit "$TAG" --notes "$NOTES"
 else
     gh release create "$TAG" "$ASSET" \
-        --title "Cats & Dogs Peek $TAG" \
+        --title "DeskPet $TAG" \
         --notes "$NOTES"
 fi
 rm -f "$ASSET"

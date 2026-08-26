@@ -1,5 +1,5 @@
 #!/bin/bash
-# Builds CatsAndDogsPeek.app in the project root.
+# Builds DeskPet.app in the project root.
 #
 #   ./Scripts/build_app.sh          shipping build (no development checks)
 #   ./Scripts/build_app.sh --dev    same, plus the PEEK_* development checks
@@ -16,13 +16,13 @@ else
     swift build -c release
 fi
 
-APP="CatsAndDogsPeek.app"
+APP="DeskPet.app"
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 
-cp .build/release/CatsAndDogsPeek "$APP/Contents/MacOS/"
+cp .build/release/DeskPet "$APP/Contents/MacOS/"
 # Bundle.module resolves against the app's Resources directory.
-cp -R .build/release/CatsAndDogsPeek_CatsAndDogsPeek.bundle "$APP/Contents/Resources/"
+cp -R .build/release/DeskPet_DeskPet.bundle "$APP/Contents/Resources/"
 
 cat > "$APP/Contents/Info.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -30,17 +30,17 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>Cats &amp; Dogs Peek</string>
+    <string>DeskPet</string>
     <key>CFBundleDisplayName</key>
-    <string>Cats &amp; Dogs Peek</string>
+    <string>DeskPet</string>
     <key>CFBundleIdentifier</key>
-    <string>com.aakash.catsanddogspeek</string>
+    <string>com.aakash.deskpet</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundleShortVersionString</key>
     <string>1.0</string>
     <key>CFBundleExecutable</key>
-    <string>CatsAndDogsPeek</string>
+    <string>DeskPet</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>LSUIElement</key>

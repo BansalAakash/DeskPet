@@ -1,4 +1,4 @@
-# Cats & Dogs Peek
+# DeskPet
 
 A cat or a dog wanders up to the edge of your screen every so often, has a
 look around, and ducks back out. Click one and it flicks an ear or waves a
@@ -18,7 +18,7 @@ lists *Source code (zip)* and *Source code (tar.gz)* on every release — those
 are the code, not something you can open. You only want those if you're
 [building it yourself](#for-developers).)
 
-1. Unzip and drag `CatsAndDogsPeek.app` to your **Applications** folder.
+1. Unzip and drag `DeskPet.app` to your **Applications** folder.
 2. Double-click it. **macOS will refuse to open it the first time** — this is
    expected, see [below](#why-macos-blocks-the-first-launch).
 3. Open  → **System Settings → Privacy & Security**, scroll to the bottom,
@@ -44,7 +44,7 @@ do](#what-it-can-and-cant-do). All the source is right here if you'd rather
 
 > On macOS 15 and later the old right-click → **Open** shortcut no longer
 > works; System Settings is the way. If you prefer the Terminal:
-> `xattr -d com.apple.quarantine /Applications/CatsAndDogsPeek.app`
+> `xattr -d com.apple.quarantine /Applications/DeskPet.app`
 
 ## The menu
 
@@ -78,9 +78,9 @@ It draws in a transparent, click-through overlay and does nothing else.
 Plain SwiftUI + AppKit, no third-party dependencies.
 
 ```sh
-git clone https://github.com/BansalAakash/CatsAndDogsPeek.git
-cd CatsAndDogsPeek
-./Scripts/build_app.sh && open CatsAndDogsPeek.app
+git clone https://github.com/BansalAakash/DeskPet.git
+cd DeskPet
+./Scripts/build_app.sh && open DeskPet.app
 ```
 
 Needs the Swift toolchain — Xcode, or `xcode-select --install`.
@@ -89,7 +89,7 @@ Needs the Swift toolchain — Xcode, or `xcode-select --install`.
 
 | Script | Purpose |
 | --- | --- |
-| `Scripts/build_app.sh` | Build `CatsAndDogsPeek.app` (`--dev` adds the checks below) |
+| `Scripts/build_app.sh` | Build `DeskPet.app` (`--dev` adds the checks below) |
 | `Scripts/run_tests.sh` | Build with checks, run them all, rebuild clean |
 | `Scripts/package.sh` | Build + zip for a release |
 | `Scripts/release.sh` | Package and publish a GitHub release (`v1.0`) |

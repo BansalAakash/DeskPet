@@ -1,11 +1,11 @@
 #!/bin/bash
-# Produces CatsAndDogsPeek.zip, ready to attach to a GitHub release.
+# Produces DeskPet.zip, ready to attach to a GitHub release.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-APP="CatsAndDogsPeek.app"
-ZIP="CatsAndDogsPeek.zip"
+APP="DeskPet.app"
+ZIP="DeskPet.zip"
 
 ./Scripts/build_app.sh
 

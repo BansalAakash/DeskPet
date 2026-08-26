@@ -1,7 +1,7 @@
 # Asset attribution
 
 The cat and dog idle-animation sprites in
-`Sources/CatsAndDogsPeek/Resources/species/` are from "Cat & Dog - Free
+`Sources/DeskPet/Resources/species/` are from "Cat & Dog - Free
 Sprites" on OpenGameArt.org:
 https://opengameart.org/content/cat-dog-free-sprites
 

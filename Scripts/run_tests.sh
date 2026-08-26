@@ -9,13 +9,13 @@
 # leaving the machine as it found it. If it is ever interrupted part-way,
 # clear the leftover with:
 #   PEEK_TEST_LOGINITEM=1 PEEK_LOGINITEM_CLEANUP=1 \
-#       ./CatsAndDogsPeek.app/Contents/MacOS/CatsAndDogsPeek
+#       ./DeskPet.app/Contents/MacOS/DeskPet
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
 ./Scripts/build_app.sh --dev
-BIN="./CatsAndDogsPeek.app/Contents/MacOS/CatsAndDogsPeek"
+BIN="./DeskPet.app/Contents/MacOS/DeskPet"
 
 status=0
 run() {

@@ -2,11 +2,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "CatsAndDogsPeek",
+    name: "DeskPet",
     platforms: [.macOS(.v13)],
     targets: [
         .executableTarget(
-            name: "CatsAndDogsPeek",
+            name: "DeskPet",
             resources: [
                 .copy("Resources/species")
             ]

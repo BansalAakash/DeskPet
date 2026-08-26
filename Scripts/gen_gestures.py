@@ -31,7 +31,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-ROOT = Path(__file__).resolve().parent.parent / "Sources/CatsAndDogsPeek/Resources/species"
+ROOT = Path(__file__).resolve().parent.parent / "Sources/DeskPet/Resources/species"
 PACK_URL = "https://opengameart.org/sites/default/files/CatnDog.zip"
 PACK_CACHE = Path("/tmp/catndog_pack")
 

@@ -10,7 +10,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         if let button = item.button {
-            let image = NSImage(systemSymbolName: "pawprint.fill", accessibilityDescription: "Animal Peek")
+            let image = NSImage(systemSymbolName: "pawprint.fill", accessibilityDescription: "DeskPet")
             image?.isTemplate = true
             button.image = image
         }
@@ -170,7 +170,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 try SMAppService.mainApp.register()
             }
         } catch {
-            NSLog("Cats & Dogs Peek: could not change the login item — \(error.localizedDescription)")
+            NSLog("DeskPet: could not change the login item — \(error.localizedDescription)")
         }
         refreshLaunchAtLogin()
     }

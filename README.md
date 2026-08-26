@@ -11,40 +11,57 @@ settings to configure. macOS 13 or later.
 
 ## Get the app
 
-**[Download the latest release →](../../releases/latest)**
+### Recommended: build it on your own Mac
 
-On that page, grab the file ending in **`-macOS-app.zip`**. (GitHub also
-lists *Source code (zip)* and *Source code (tar.gz)* on every release — those
-are the code, not something you can open. You only want those if you're
-[building it yourself](#for-developers).)
+Paste this into **Terminal** and press return:
 
-1. Unzip and drag `DeskPet.app` to your **Applications** folder.
-2. Double-click it. **macOS will refuse to open it the first time** — this is
-   expected, see [below](#why-macos-blocks-the-first-launch).
-3. Open  → **System Settings → Privacy & Security**, scroll to the bottom,
-   and click **Open Anyway**. Confirm.
-4. A paw appears in your menu bar. Done — every launch after this is normal.
+```sh
+curl -fsSL https://raw.githubusercontent.com/BansalAakash/DeskPet/main/install.sh | bash
+```
 
-Optionally click the paw → **Open at Login** so it starts with your Mac.
+It downloads the source, builds it, installs it, and starts it — about a
+minute. A paw appears in your menu bar and you're done.
 
-To uninstall: quit from the menu, and drag the app to the Trash. It leaves
-nothing else behind but a small preferences file.
+**No security warnings, no approval step.** macOS only quarantines apps that
+arrive *from* the internet; one you compiled yourself is trusted from the
+start. It also installs to `~/Applications` automatically if your Mac doesn't
+let you write to `/Applications`, which is common on work machines.
 
-### Why macOS blocks the first launch
+The one requirement is Apple's developer tools. If they're missing the script
+starts the installer and asks you to run it again — that's a one-time,
+Apple-provided download.
 
-Apple only lets an app open without a prompt if the developer pays $99/year
-for a Developer account and uploads each build to Apple to be *notarised*.
-This app doesn't do that, so macOS can't confirm who wrote it and asks you to
-approve it by hand, once.
+Prefer to read it before running it? That's the same file:
+[`install.sh`](install.sh).
 
-It is not a warning about anything the app does. The app has no network code
-at all and needs no permissions — see [What it can and can't
-do](#what-it-can-and-cant-do). All the source is right here if you'd rather
-[build it yourself](#for-developers).
+### Alternative: download a prebuilt app
+
+**[Download the latest release →](../../releases/latest)** and take the file
+ending in **`-macOS-app.zip`**. (GitHub also lists *Source code (zip)* and
+*(tar.gz)* on every release — those are the code, not something you can open.)
+
+Unzip it, drag `DeskPet.app` to **Applications**, and double-click.
+**macOS will refuse to open it the first time** — open  → **System Settings
+→ Privacy & Security**, scroll to the bottom, and click **Open Anyway**.
+
+That extra step exists because Apple only waives it for developers who pay
+$99/year to have each build notarised. It isn't a warning about anything the
+app does. Building locally avoids it entirely, which is why that's the
+recommended route.
 
 > On macOS 15 and later the old right-click → **Open** shortcut no longer
-> works; System Settings is the way. If you prefer the Terminal:
+> works. If you prefer the Terminal:
 > `xattr -d com.apple.quarantine /Applications/DeskPet.app`
+
+### If something goes wrong
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/BansalAakash/DeskPet/main/Scripts/diagnose.sh | bash
+```
+
+Prints a short summary of what happened — whether the app crashed, or was
+shut down by something else on the machine (which is what usually happens on
+a managed work laptop).
 
 ## The menu
 
@@ -56,6 +73,10 @@ do](#what-it-can-and-cant-do). All the source is right here if you'd rather
 | **Peek Now** | Show one right away — replaces any that's already out |
 | **Open at Login** | Start automatically with your Mac |
 | **Quit** | |
+
+To uninstall: quit from the menu, then drag `DeskPet.app` out of
+`/Applications` (or `~/Applications`) to the Trash. Nothing else is left
+behind but a small preferences file.
 
 ## What it can and can't do
 <a id="what-it-can-and-cant-do"></a>
@@ -94,6 +115,8 @@ Needs the Swift toolchain — Xcode, or `xcode-select --install`.
 | `Scripts/package.sh` | Build + zip for a release |
 | `Scripts/release.sh` | Package and publish a GitHub release (`v1.0`) |
 | `Scripts/gen_gestures.py` | Regenerate every sprite from the source art |
+| `Scripts/diagnose.sh` | Summarise a crash or a policy kill |
+| `install.sh` | One-command build-and-install, for users |
 
 ### How it's put together
 

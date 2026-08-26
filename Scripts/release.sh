@@ -25,6 +25,17 @@ ASSET="DeskPet-${TAG}-macOS-app.zip"
 rm -f "$ASSET"
 cp DeskPet.zip "$ASSET"
 
+# Pin the exact bytes. Homebrew refuses to install if the download doesn't
+# match, and anyone downloading by hand can check the same value.
+SHA=$(shasum -a 256 "$ASSET" | cut -d' ' -f1)
+VERSION="${TAG#v}"
+CASK="Casks/deskpet.rb"
+/usr/bin/sed -i '' \
+    -e "s/^  version \".*\"$/  version \"$VERSION\"/" \
+    -e "s/^  sha256 \".*\"$/  sha256 \"$SHA\"/" \
+    "$CASK"
+echo "Updated $CASK -> version $VERSION, sha256 $SHA"
+
 NOTES=$(cat <<EOF
 ## Download
 
@@ -34,6 +45,18 @@ Ignore **Source code (zip)** and **Source code (tar.gz)** at the bottom of
 this page unless you want to build it yourself. GitHub attaches those to
 every release automatically; they contain the code, not a program you can
 open.
+
+## Verify what you downloaded
+
+\`\`\`
+shasum -a 256 $ASSET
+\`\`\`
+
+should print:
+
+\`\`\`
+$SHA
+\`\`\`
 
 ## Install
 

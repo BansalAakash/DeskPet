@@ -11,57 +11,64 @@ settings to configure. macOS 13 or later.
 
 ## Get the app
 
-### Recommended: build it on your own Mac
+DeskPet is **not notarised by Apple** — that costs $99/year — so macOS can't
+vouch for it. Both routes below deal with that honestly rather than asking
+you to run something unseen.
 
-Paste this into **Terminal** and press return:
+### Option 1 — Homebrew (checksum-verified)
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/BansalAakash/DeskPet/main/install.sh | bash
+brew tap BansalAakash/deskpet https://github.com/BansalAakash/DeskPet
+brew install --cask --no-quarantine deskpet
 ```
 
-It downloads the source, builds it, installs it, and starts it — about a
-minute. A paw appears in your menu bar and you're done.
+Homebrew downloads the release, checks it against a SHA-256 pinned in
+[`Casks/deskpet.rb`](Casks/deskpet.rb), and refuses to install if a single
+byte differs. The cask is a short, readable file in this repo — worth
+[reading first](Casks/deskpet.rb).
 
-**No security warnings, no approval step.** macOS only quarantines apps that
-arrive *from* the internet; one you compiled yourself is trusted from the
-start. It also installs to `~/Applications` automatically if your Mac doesn't
-let you write to `/Applications`, which is common on work machines.
+`--no-quarantine` skips the Gatekeeper prompt. Leave it off if you'd rather
+approve the app yourself in System Settings → Privacy & Security.
 
-The one requirement is Apple's developer tools. If they're missing the script
-starts the installer and asks you to run it again — that's a one-time,
-Apple-provided download.
+Update with `brew upgrade --cask deskpet`, remove with
+`brew uninstall --cask deskpet`.
 
-Prefer to read it before running it? That's the same file:
-[`install.sh`](install.sh).
+### Option 2 — build it yourself (nothing to trust)
 
-### Alternative: download a prebuilt app
+The most cautious route: read the code, then compile it. Nothing downloaded
+runs until you've looked at it, and an app you build locally is never
+quarantined, so macOS raises no warning at all.
 
-**[Download the latest release →](../../releases/latest)** and take the file
-ending in **`-macOS-app.zip`**. (GitHub also lists *Source code (zip)* and
-*(tar.gz)* on every release — those are the code, not something you can open.)
+```sh
+git clone https://github.com/BansalAakash/DeskPet.git
+cd DeskPet
+less Scripts/build_app.sh     # ~60 lines; see what it will do
+./Scripts/build_app.sh
+cp -R DeskPet.app /Applications/
+open /Applications/DeskPet.app
+```
 
-Unzip it, drag `DeskPet.app` to **Applications**, and double-click.
-**macOS will refuse to open it the first time** — open  → **System Settings
-→ Privacy & Security**, scroll to the bottom, and click **Open Anyway**.
+Needs Apple's developer tools (`xcode-select --install`). Takes about a
+minute.
 
-That extra step exists because Apple only waives it for developers who pay
-$99/year to have each build notarised. It isn't a warning about anything the
-app does. Building locally avoids it entirely, which is why that's the
-recommended route.
+### Verifying a manual download
 
-> On macOS 15 and later the old right-click → **Open** shortcut no longer
-> works. If you prefer the Terminal:
-> `xattr -d com.apple.quarantine /Applications/DeskPet.app`
+If you'd rather grab the zip straight from the
+[releases page](../../releases/latest), check it before opening it:
+
+```sh
+shasum -a 256 DeskPet-v1.1-macOS-app.zip
+```
+
+Compare the output against the checksum printed in that release's notes. Take
+the file ending in **`-macOS-app.zip`** — GitHub also attaches *Source code
+(zip)* and *(tar.gz)*, which are the code, not something you can open.
 
 ### If something goes wrong
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/BansalAakash/DeskPet/main/Scripts/diagnose.sh | bash
-```
-
-Prints a short summary of what happened — whether the app crashed, or was
-shut down by something else on the machine (which is what usually happens on
-a managed work laptop).
+From a checkout: `./Scripts/diagnose.sh`. It prints a short summary — whether
+the app crashed, or was shut down by something else on the machine, which is
+what usually happens on a managed work laptop.
 
 ## The menu
 
@@ -113,10 +120,9 @@ Needs the Swift toolchain — Xcode, or `xcode-select --install`.
 | `Scripts/build_app.sh` | Build `DeskPet.app` (`--dev` adds the checks below) |
 | `Scripts/run_tests.sh` | Build with checks, run them all, rebuild clean |
 | `Scripts/package.sh` | Build + zip for a release |
-| `Scripts/release.sh` | Package and publish a GitHub release (`v1.0`) |
+| `Scripts/release.sh` | Publish a release and pin its checksum into the cask |
 | `Scripts/gen_gestures.py` | Regenerate every sprite from the source art |
 | `Scripts/diagnose.sh` | Summarise a crash or a policy kill |
-| `install.sh` | One-command build-and-install, for users |
 
 ### How it's put together
 

@@ -13,18 +13,6 @@ final class PeekWindowController: NSObject {
     private var onFinished: (() -> Void)?
     private let state = PeekState()
 
-    #if PEEK_DEV
-    /// Seams used only by the development checks.
-    var testPanel: NSPanel? { panel }
-    var testLayout: PeekLayout? { layout }
-    var testForcedGesture: Gesture?
-    var testForcedFace: FaceVariant?
-    var currentFace: FaceVariant { face }
-    var currentReveal: CGFloat { state.reveal }
-    private(set) var acceptedClicks = 0
-    private(set) var playedGestures: [Gesture] = []
-    #endif
-
     private var layout: PeekLayout?
     private var mask: AlphaMask?
     private var gestures: [Gesture] = []
@@ -61,9 +49,6 @@ final class PeekWindowController: NSObject {
 
         let faces = SpriteLibrary.shared.availableFaces(for: speciesID)
         face = faces.randomElement() ?? .plain
-        #if PEEK_DEV
-        if let forced = testForcedFace { face = forced }
-        #endif
 
         let idle = SpriteLibrary.shared.frames(for: speciesID, face: face)
         guard !idle.isEmpty else {
@@ -86,12 +71,6 @@ final class PeekWindowController: NSObject {
         )
         self.layout = layout
         self.mask = SpriteLibrary.shared.hitMask(for: speciesID, face: face, edge: edge)
-
-        #if PEEK_DEV
-        state.onGestureStarted = { [weak self] gesture in
-            self?.playedGestures.append(gesture)
-        }
-        #endif
 
         let panel = NSPanel(
             contentRect: layout.windowFrame,
@@ -158,9 +137,6 @@ final class PeekWindowController: NSObject {
 
     private func handleClick() {
         guard isInteractive, !gestures.isEmpty else { return }
-        #if PEEK_DEV
-        acceptedClicks += 1
-        #endif
         requestCounter += 1
 
         let gesture = pickGesture()
@@ -207,12 +183,6 @@ final class PeekWindowController: NSObject {
     /// all four would show an ear half the time and read as "always the
     /// ear"; grouping them into one slot keeps the mix even.
     private func pickGesture() -> Gesture {
-        #if PEEK_DEV
-        if let forced = testForcedGesture {
-            testForcedGesture = nil
-            return forced
-        }
-        #endif
         let available = Gesture.families
             .map { $0.filter(gestures.contains) }
             .filter { !$0.isEmpty }

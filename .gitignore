@@ -1,9 +1,4 @@
-# Build products
 .build/
 *.app
-*.zip
-
-# Editor / OS noise
-*.bak
-__pycache__/
 .DS_Store
+__pycache__/

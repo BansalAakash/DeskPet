@@ -28,41 +28,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         PeekScheduler.shared.start()
 
-        #if PEEK_DEV
-        if ProcessInfo.processInfo.environment["PEEK_TEST_LOGINITEM"] != nil {
-            LoginItemSelfTest.run()
-        }
-
-        if ProcessInfo.processInfo.environment["PEEK_TEST_FACES"] != nil {
-            FaceTallySelfTest.run()
-        }
-
-        if ProcessInfo.processInfo.environment["PEEK_TEST_PEEKNOW"] != nil {
-            PeekNowSelfTest.run()
-        }
-
-        if ProcessInfo.processInfo.environment["PEEK_TEST_CLICK"] != nil {
-            clickTest = ClickSelfTest()
-            clickTest?.run()
-        }
-        #endif
     }
-
-    #if PEEK_DEV
-    private var clickTest: ClickSelfTest?
-    #endif
 
     /// True when a different process is already running this same app —
     /// which happens after an upgrade if an older copy is still open from
     /// another folder.
     private func anotherCopyIsRunning() -> Bool {
-        #if PEEK_DEV
-        // The development checks drive the app directly and may overlap with
-        // a copy the developer already has running.
-        if ProcessInfo.processInfo.environment.keys.contains(where: { $0.hasPrefix("PEEK_") }) {
-            return false
-        }
-        #endif
         guard let id = Bundle.main.bundleIdentifier else { return false }
         let mine = ProcessInfo.processInfo.processIdentifier
         return NSRunningApplication

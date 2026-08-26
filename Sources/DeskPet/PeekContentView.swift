@@ -20,11 +20,6 @@ final class PeekState: ObservableObject {
     @Published var reveal: CGFloat = 0
     /// Set to ask for a gesture; the view consumes and clears it.
     @Published var request: GestureRequest?
-    #if PEEK_DEV
-    /// Lets the development checks confirm a click produces real motion,
-    /// not just an accepted event.
-    var onGestureStarted: ((Gesture) -> Void)?
-    #endif
 }
 
 /// Renders a character clipped to a strip flush against the screen edge,
@@ -128,9 +123,6 @@ struct PeekContentView: View {
         playing = request.gesture
         gestureIndex = 0
         state.request = nil
-        #if PEEK_DEV
-        state.onGestureStarted?(request.gesture)
-        #endif
         return true
     }
 }

@@ -1,20 +1,10 @@
 #!/bin/bash
 # Builds DeskPet.app in the project root.
-#
-#   ./Scripts/build_app.sh          shipping build (no development checks)
-#   ./Scripts/build_app.sh --dev    same, plus the PEEK_* development checks
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-DEV=0
-[ "${1:-}" = "--dev" ] && DEV=1
-
-if [ "$DEV" = "1" ]; then
-    swift build -c release -Xswiftc -DPEEK_DEV
-else
-    swift build -c release
-fi
+swift build -c release
 
 APP="DeskPet.app"
 rm -rf "$APP"
@@ -66,4 +56,5 @@ else
 fi
 
 SIZE=$(du -sh "$APP" | cut -f1)
-echo "Built $APP  [$SIZE, $SIGNED$([ "$DEV" = "1" ] && echo ", development checks included")]"
+echo "Built $APP  [$SIZE, $SIGNED]"
+echo "Install it with:  cp -R $APP /Applications/"

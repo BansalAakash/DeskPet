@@ -3,6 +3,7 @@
 // (or Scripts/run_tests.sh) to include them.
 #if PEEK_DEV
 import AppKit
+import ServiceManagement
 
 /// Geometry/asset assertions, run via `PEEK_SELFTEST=1`. Kept in the
 /// binary because the layout math is pure and worth re-checking after
@@ -509,4 +510,80 @@ enum FaceTallySelfTest {
     }
 }
 
+
+/// Exercises the "Open at Login" toggle end to end, via
+/// `PEEK_TEST_LOGINITEM=1`. It registers, checks, then unregisters, so it
+/// leaves the machine exactly as it found it.
+enum LoginItemSelfTest {
+    static func run() {
+        setvbuf(stdout, nil, _IONBF, 0)
+
+        func describe(_ s: SMAppService.Status) -> String {
+            switch s {
+            case .notRegistered: return "notRegistered"
+            case .enabled: return "enabled"
+            case .requiresApproval: return "requiresApproval"
+            case .notFound: return "notFound"
+            @unknown default: return "unknown(\(s.rawValue))"
+            }
+        }
+
+        let service = SMAppService.mainApp
+        var failures = 0
+
+        let before = service.status
+        print("  status before: \(describe(before))")
+
+        // Escape hatch: if a previous run was interrupted between register
+        // and unregister, this clears the leftover item.
+        if ProcessInfo.processInfo.environment["PEEK_LOGINITEM_CLEANUP"] != nil {
+            do {
+                try service.unregister()
+                print("  cleanup unregister(): OK -> \(describe(service.status))")
+            } catch {
+                print("  cleanup unregister(): FAILED — \(error.localizedDescription)")
+                exit(1)
+            }
+            exit(0)
+        }
+
+        guard before == .notRegistered || before == .notFound else {
+            print("  already registered — leaving it alone, nothing to test")
+            exit(0)
+        }
+
+        do {
+            try service.register()
+            print("  register(): OK")
+        } catch {
+            print("  register(): FAILED — \(error.localizedDescription)")
+            exit(1)
+        }
+
+        let after = service.status
+        // requiresApproval is a success: macOS registered it and is waiting
+        // for the user to allow it in System Settings.
+        let ok = (after == .enabled || after == .requiresApproval)
+        print("  status after register: \(describe(after)) \(ok ? "OK" : "<-- FAIL")")
+        failures += ok ? 0 : 1
+
+        do {
+            try service.unregister()
+            print("  unregister(): OK")
+        } catch {
+            print("  unregister(): FAILED — \(error.localizedDescription)")
+            print("  !! a login item may have been left behind; remove it in")
+            print("     System Settings > General > Login Items")
+            exit(1)
+        }
+
+        let restored = service.status
+        let clean = (restored == .notRegistered || restored == .notFound)
+        print("  status after unregister: \(describe(restored)) \(clean ? "OK (nothing left behind)" : "<-- FAIL")")
+        failures += clean ? 0 : 1
+
+        print(failures == 0 ? "LOGINITEM PASS" : "LOGINITEM FAIL (\(failures) issue(s))")
+        exit(failures == 0 ? 0 : 1)
+    }
+}
 #endif

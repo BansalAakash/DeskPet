@@ -22,6 +22,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         PeekScheduler.shared.start()
 
         #if PEEK_DEV
+        if ProcessInfo.processInfo.environment["PEEK_TEST_LOGINITEM"] != nil {
+            LoginItemSelfTest.run()
+        }
+
         if ProcessInfo.processInfo.environment["PEEK_TEST_FACES"] != nil {
             FaceTallySelfTest.run()
         }

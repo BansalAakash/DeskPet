@@ -7,6 +7,26 @@ paw. That's the whole app.
 It lives in the menu bar (🐾) — no Dock icon, no window, no account, no
 settings to configure.
 
+## Download
+
+Needs macOS 13 or later.
+
+1. Download [`DeskPet.zip`](https://github.com/BansalAakash/DeskPet/releases/latest/download/DeskPet.zip)
+   from the [latest release](https://github.com/BansalAakash/DeskPet/releases/latest)
+   and unzip it.
+2. Move `DeskPet.app` to `/Applications`.
+3. **First launch only:** right-click (Control-click) `DeskPet.app` and choose
+   **Open**, then confirm in the dialog that appears.
+
+That right-click is needed exactly once. This build is ad-hoc signed, not
+notarized with a paid Apple Developer ID, so macOS quarantines anything
+downloaded from a browser and blocks a plain double-click the first time.
+Opening it this way tells macOS you trust it; every launch after that —
+including double-click and Open at Login — works normally.
+
+If you'd rather skip that step entirely, build it yourself instead — see
+below.
+
 ## Build and install
 
 Needs macOS 13 or later and Apple's developer tools
@@ -21,9 +41,11 @@ open /Applications/DeskPet.app
 ```
 
 Takes about a minute. An app you build yourself is never quarantined, so
-macOS raises no security warning.
+macOS raises no security warning — no right-click workaround needed.
 
-To uninstall: quit from the menu, then drag `DeskPet.app` to the Trash.
+## Uninstall
+
+Quit from the menu, then drag `DeskPet.app` to the Trash.
 
 ## The menu
 

@@ -4,13 +4,21 @@ A cat or a dog wanders up to the edge of your screen every so often, has a
 look around, and ducks back out. Click one and it flicks an ear or waves a
 paw. That's the whole app.
 
-It lives in the menu bar (🐾) — no Dock icon, no window, no account, no
+Comes in two forms that work independently of each other:
+
+- **[Desktop app](#desktop-app-macos)** — lives in your macOS menu bar,
+  peeks from the edge of your screen.
+- **[Chrome extension](#chrome-extension)** — lives in your browser, peeks
+  from the edge of whichever tab you're on.
+
+---
+
+## Desktop app (macOS)
+
+Lives in the menu bar (🐾) — no Dock icon, no window, no account, no
 settings to configure.
 
-Also comes as a [Chrome extension](#chrome-extension) that does the same
-thing inside your browser, on whichever tab you're looking at.
-
-## Download
+### Install
 
 Needs macOS 13 or later.
 
@@ -27,13 +35,9 @@ downloaded from a browser and blocks a plain double-click the first time.
 Opening it this way tells macOS you trust it; every launch after that —
 including double-click and Open at Login — works normally.
 
-If you'd rather skip that step entirely, build it yourself instead — see
-below.
-
-## Build and install
-
-Needs macOS 13 or later and Apple's developer tools
-(`xcode-select --install`).
+**Prefer to skip that step entirely?** Build it yourself instead — an app
+you build yourself is never quarantined, so macOS raises no security
+warning at all. Needs Apple's developer tools (`xcode-select --install`):
 
 ```sh
 git clone https://github.com/BansalAakash/DeskPet.git
@@ -43,31 +47,13 @@ cp -R DeskPet.app /Applications/
 open /Applications/DeskPet.app
 ```
 
-Takes about a minute. An app you build yourself is never quarantined, so
-macOS raises no security warning — no right-click workaround needed.
+Takes about a minute.
 
-## Uninstall
+### Uninstall
 
 Quit from the menu, then drag `DeskPet.app` to the Trash.
 
-## Chrome extension
-
-The same idea, inside your browser: a cat or a dog peeks in from the edge
-of whichever tab you're on, click it for a gesture. Not published to the
-Chrome Web Store, so it installs as an unpacked extension:
-
-1. Download [`extension.zip`](https://github.com/BansalAakash/DeskPet/releases/latest/download/extension.zip)
-   from the [latest release](https://github.com/BansalAakash/DeskPet/releases/latest)
-   and unzip it.
-2. Open `chrome://extensions` in Chrome and turn on **Developer mode**
-   (top right).
-3. Click **Load unpacked** and select the unzipped folder.
-
-That's it — no build step, no dependencies. See
-[`extension/README.md`](extension/README.md) for how it works and where
-it deliberately differs from the macOS app.
-
-## The menu
+### The menu
 
 | Item | What it does |
 | --- | --- |
@@ -78,7 +64,7 @@ it deliberately differs from the macOS app.
 | **Open at Login** | Start automatically with your Mac |
 | **Quit** | |
 
-## What it does and doesn't do
+### What it does and doesn't do
 
 It draws in a transparent, click-through overlay and nothing else.
 
@@ -91,7 +77,7 @@ It draws in a transparent, click-through overlay and nothing else.
 - **One at a time.** Never more than a single character on screen, and only
   one copy of the app runs at once.
 
-## How the code is laid out
+### How the code is laid out
 
 Plain SwiftUI + AppKit. No third-party dependencies.
 
@@ -123,10 +109,11 @@ A few decisions worth knowing before changing things:
   resting cut, so a paw wave leans the character further out first —
   otherwise the wave plays entirely off-screen.
 
-## Artwork
+### Artwork
 
 Sprites live in `Sources/DeskPet/Resources/species/<animal>/<face>/` and are
-committed, so building needs nothing extra.
+committed, so building needs nothing extra. The Chrome extension ships a
+copy of the same files under `extension/sprites/`.
 
 `Scripts/gen_gestures.py` regenerates them from the original CC0 pack, which
 it downloads and caches — the two face variants and every gesture frame are
@@ -136,6 +123,53 @@ derived from it. Needs `pillow` and `numpy`.
 python3 Scripts/gen_gestures.py           # preview; contact sheets to /tmp
 python3 Scripts/gen_gestures.py --write   # update the app's resources
 ```
+
+---
+
+## Chrome extension
+
+The same idea, inside your browser: a cat or a dog peeks in from the edge
+of whichever tab you're on, click it for a gesture. Works no matter which
+tab you're on — each tab runs its own independent schedule, so switching
+tabs always lands you on a live pet, not a frozen one.
+
+Not published to the Chrome Web Store, so it installs as an unpacked
+extension — no build step, no dependencies.
+
+### Install
+
+1. Download [`extension.zip`](https://github.com/BansalAakash/DeskPet/releases/latest/download/extension.zip)
+   from the [latest release](https://github.com/BansalAakash/DeskPet/releases/latest)
+   and unzip it.
+2. Open `chrome://extensions` in Chrome and turn on **Developer mode**
+   (top right).
+3. Click **Load unpacked** and select the unzipped folder.
+
+It's now active on every regular `http://`/`https://` page — Chrome blocks
+extensions from running on `chrome://` pages, so it won't peek there.
+
+### Uninstall
+
+Go to `chrome://extensions`, find DeskPet, and click **Remove**.
+
+### The popup
+
+Click the 🐾 icon in your toolbar (pin it via the puzzle-piece icon if it's
+hidden) to open:
+
+| Item | What it does |
+| --- | --- |
+| **Enabled** | Pause or resume |
+| **Frequency** | Ultra Often (5s), Often (15–45s), Normal (45–120s), Rare (2–5 min) |
+| **Animals** | Turn individual characters on or off |
+| **Peek Now** | Show one right away on your current tab |
+
+Settings are shared across all tabs, but each tab schedules its own peeks
+independently — see [`extension/README.md`](extension/README.md) for why,
+and for where this deliberately differs from the macOS app (no per-pixel
+click hit-testing, no cross-tab "one at a time" enforcement).
+
+---
 
 ## Licence
 

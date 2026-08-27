@@ -226,13 +226,3 @@ enum PeekLayoutBuilder {
         )
     }
 }
-
-extension CGSize {
-    /// The dimension along a given edge's reveal axis.
-    func widthOrHeight(_ edge: PeekEdge) -> CGFloat {
-        switch edge {
-        case .top, .bottom: return height
-        case .left, .right: return width
-        }
-    }
-}

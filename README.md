@@ -145,8 +145,26 @@ extension — no build step, no dependencies.
    (top right).
 3. Click **Load unpacked** and select the unzipped folder.
 
-It's now active on every regular `http://`/`https://` page — Chrome blocks
-extensions from running on `chrome://` pages, so it won't peek there.
+It's now active on every regular `http://`/`https://` page, including
+installed web apps (Gmail, Meet, Chat, etc.) — those are just Chrome
+windows without the toolbar, running under the same profile.
+
+### Where it won't work
+
+- **Any `chrome://` page** — settings, extensions, history, the new-tab
+  page. Chrome blocks all extensions from running there; no override
+  exists.
+- **The Chrome Web Store** — blacklisted for extensions regardless of what
+  a manifest asks for.
+- **Incognito windows** — off by default. Enable it yourself at
+  `chrome://extensions` → DeskPet → **Details** → **Allow in Incognito**.
+- **Local files** (`file:///...`) — the extension doesn't request file
+  access.
+- **Other Chrome profiles** — "Load unpacked" only installs into the
+  profile you did it in; a second profile needs its own install.
+- **Other browsers** — Safari, Firefox, etc. don't run Chrome extensions.
+- **Chrome's built-in PDF viewer**, probably — it's a special embedded
+  renderer, not a normal page, so content scripts likely can't reach it.
 
 ### Uninstall
 

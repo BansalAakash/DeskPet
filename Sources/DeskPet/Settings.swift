@@ -1,12 +1,14 @@
 import Foundation
 
 enum Frequency: String, CaseIterable {
+    case ultraOften
     case often
     case normal
     case rare
 
     var displayName: String {
         switch self {
+        case .ultraOften: return "Ultra Often"
         case .often: return "Often"
         case .normal: return "Normal"
         case .rare: return "Rare"
@@ -16,6 +18,7 @@ enum Frequency: String, CaseIterable {
     /// Range of seconds to wait before the next peek.
     var delayRange: ClosedRange<Double> {
         switch self {
+        case .ultraOften: return 5...5
         case .often: return 15...45
         case .normal: return 45...120
         case .rare: return 120...300

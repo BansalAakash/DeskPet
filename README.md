@@ -52,7 +52,7 @@ Quit from the menu, then drag `DeskPet.app` to the Trash.
 | Item | What it does |
 | --- | --- |
 | **Enabled** | Pause or resume without quitting |
-| **Frequency** | Often (15–45s), Normal (45–120s), Rare (2–5 min) |
+| **Frequency** | Ultra Often (5s), Often (15–45s), Normal (45–120s), Rare (2–5 min) |
 | **Animals** | Turn individual characters on or off |
 | **Peek Now** | Show one right away — replaces any that's already out |
 | **Open at Login** | Start automatically with your Mac |

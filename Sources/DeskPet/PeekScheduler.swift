@@ -43,6 +43,13 @@ final class PeekScheduler {
         scheduleNext()
     }
 
+    /// Arms a single future spawn attempt. Only ever called when nothing is
+    /// currently on screen — at startup, after a spawn attempt is skipped,
+    /// or from a peek's own completion — so the delay is always measured
+    /// from the moment the previous one actually disappeared, not from
+    /// when it started. That distinction is invisible at the slower bands
+    /// (even "Often" only fires every 15s+, well past a peek's ~6s
+    /// lifetime), but matters once the delay gets shorter than that.
     private func scheduleNext() {
         pendingWorkItem?.cancel()
         let delay = Double.random(in: Settings.shared.frequency.delayRange)
@@ -50,23 +57,29 @@ final class PeekScheduler {
             guard let self else { return }
             if Settings.shared.enabled {
                 self.spawnPeek()
+            } else {
+                self.scheduleNext()
             }
-            self.scheduleNext()
         }
         pendingWorkItem = workItem
         DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: workItem)
     }
 
     private func spawnPeek() {
+        // Something's already out — this only happens if "Peek Now" spawned
+        // one out of band while the regular timer was still armed. Bail
+        // without rescheduling; the active peek's own completion already
+        // owns the next cycle.
         guard activeControllers.count < Self.maxConcurrentPeeks else { return }
         // Lid closed or screen locked: nothing to animate for, so skip
-        // this round rather than spend GPU/CPU on an unseen overlay.
-        guard PowerAwareness.canPeek() else { return }
+        // this round rather than spend GPU/CPU on an unseen overlay — but
+        // keep the cycle alive by trying again after another delay.
+        guard PowerAwareness.canPeek() else { scheduleNext(); return }
         // Re-read the screen list every time so newly attached displays
         // join the rotation and detached ones drop out.
-        guard let screen = NSScreen.screens.randomElement() else { return }
-        guard let species = speciesToShow() else { return }
-        guard let edge = pickEdge() else { return }
+        guard let screen = NSScreen.screens.randomElement() else { scheduleNext(); return }
+        guard let species = speciesToShow() else { scheduleNext(); return }
+        guard let edge = pickEdge() else { scheduleNext(); return }
         lastEdge = edge
 
         let controller = PeekWindowController()
@@ -79,6 +92,8 @@ final class PeekScheduler {
             if self.respawnAfterDismiss {
                 self.respawnAfterDismiss = false
                 self.spawnPeek()
+            } else {
+                self.scheduleNext()
             }
         }
     }

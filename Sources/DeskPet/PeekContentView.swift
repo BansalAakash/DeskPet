@@ -38,7 +38,20 @@ struct PeekContentView: View {
     @State private var playing: Gesture?
     @State private var gestureIndex = 0
 
-    private let frameInterval = GesturePlayback.frameInterval
+    // Held in @State, not built inline in `body`: body re-runs on every
+    // frame tick (frameIndex is @State too), and a publisher constructed
+    // inline there would be recreated — tearing down and rescheduling a
+    // real Foundation.Timer ~11 times a second for as long as a peek is
+    // up. @State's initial-value expression runs once per view identity,
+    // so this timer is created a single time and just keeps ticking.
+    // A small tolerance lets the OS coalesce these wakeups with other
+    // system timers instead of waking the CPU on an exact schedule.
+    @State private var clock = Timer.publish(
+        every: GesturePlayback.frameInterval,
+        tolerance: GesturePlayback.frameInterval * 0.2,
+        on: .main,
+        in: .common
+    ).autoconnect()
 
     private var edge: PeekEdge { layout.anchoredEdge }
 
@@ -78,7 +91,7 @@ struct PeekContentView: View {
                 alignment: spriteAlignment
             )
             .clipped()
-            .onReceive(Timer.publish(every: frameInterval, on: .main, in: .common).autoconnect()) { _ in
+            .onReceive(clock) { _ in
                 advance()
             }
     }

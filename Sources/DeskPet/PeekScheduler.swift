@@ -59,6 +59,9 @@ final class PeekScheduler {
 
     private func spawnPeek() {
         guard activeControllers.count < Self.maxConcurrentPeeks else { return }
+        // Lid closed or screen locked: nothing to animate for, so skip
+        // this round rather than spend GPU/CPU on an unseen overlay.
+        guard PowerAwareness.canPeek() else { return }
         // Re-read the screen list every time so newly attached displays
         // join the rotation and detached ones drop out.
         guard let screen = NSScreen.screens.randomElement() else { return }

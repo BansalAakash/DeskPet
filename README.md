@@ -138,7 +138,7 @@ extension — no build step, no dependencies.
 
 ### Install
 
-1. Download [`extension.zip`](https://github.com/BansalAakash/DeskPet/releases/latest/download/extension.zip)
+1. Download [`DeskPet-extension.zip`](https://github.com/BansalAakash/DeskPet/releases/latest/download/DeskPet-extension.zip)
    from the [latest release](https://github.com/BansalAakash/DeskPet/releases/latest)
    and unzip it.
 2. Open `chrome://extensions` in Chrome and turn on **Developer mode**

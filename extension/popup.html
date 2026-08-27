@@ -48,14 +48,17 @@
     overflow: hidden;
   }
 
-  .dp-title {
-    position: absolute;
-    top: 14px;
-    left: 12px;
+  .dp-toprow {
     display: flex;
-    align-items: baseline;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 12px 0;
+  }
+
+  .dp-title {
+    display: flex;
+    align-items: center;
     gap: 5px;
-    z-index: 1;
   }
   .dp-emoji { font-size: 14px; }
   .dp-title-text {
@@ -65,49 +68,14 @@
     letter-spacing: -0.01em;
   }
 
-  .dp-switch {
-    position: absolute;
-    top: 17px;
-    right: 12px;
-    z-index: 1;
-    display: block;
-    width: 34px;
-    height: 20px;
-    cursor: pointer;
-  }
-  .dp-switch input {
-    position: absolute;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
+  .dp-enabled {
+    width: 18px;
+    height: 18px;
     margin: 0;
+    accent-color: var(--blush);
     cursor: pointer;
   }
-  .dp-switch-track {
-    display: block;
-    width: 34px;
-    height: 20px;
-    border-radius: 10px;
-    background: var(--line);
-    transition: background 0.15s ease;
-  }
-  .dp-switch-thumb {
-    display: block;
-    width: 16px;
-    height: 16px;
-    margin: 2px;
-    border-radius: 50%;
-    background: var(--paper);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-    transition: transform 0.15s ease;
-  }
-  .dp-switch input:checked ~ .dp-switch-track {
-    background: var(--blush);
-  }
-  .dp-switch input:checked ~ .dp-switch-track .dp-switch-thumb {
-    transform: translateX(14px);
-  }
-  .dp-switch input:focus-visible ~ .dp-switch-track {
+  .dp-enabled:focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
   }
@@ -134,7 +102,7 @@
     transform: translateY(-3px);
   }
   @media (prefers-reduced-motion: reduce) {
-    .dp-peek-img, .dp-switch-thumb, .dp-switch-track { transition: none; }
+    .dp-peek-img { transition: none; }
   }
 
   .dp-body {
@@ -275,14 +243,13 @@
 </head>
 <body>
   <header class="dp-header">
-    <div class="dp-title">
-      <span class="dp-emoji" aria-hidden="true">🐾</span>
-      <span class="dp-title-text">DeskPet</span>
+    <div class="dp-toprow">
+      <div class="dp-title">
+        <span class="dp-emoji" aria-hidden="true">🐾</span>
+        <span class="dp-title-text">DeskPet</span>
+      </div>
+      <input type="checkbox" id="enabled" class="dp-enabled" title="Enabled">
     </div>
-    <label class="dp-switch" title="Enabled">
-      <input type="checkbox" id="enabled">
-      <span class="dp-switch-track"><span class="dp-switch-thumb"></span></span>
-    </label>
     <div class="dp-peek">
       <img id="peekImg" class="dp-peek-img" alt="" draggable="false">
     </div>

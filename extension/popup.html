@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>DeskPet</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    width: 220px;
+    margin: 0;
+    padding: 12px;
+    font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: Canvas;
+    color: CanvasText;
+  }
+  h1 {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  select {
+    font: inherit;
+    padding: 2px 4px;
+  }
+  fieldset {
+    border: none;
+    padding: 0;
+    margin: 0 0 10px;
+  }
+  legend {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    opacity: 0.6;
+    margin-bottom: 4px;
+    padding: 0;
+  }
+  .species-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+  button {
+    width: 100%;
+    padding: 6px;
+    font: inherit;
+    border-radius: 6px;
+    border: 1px solid color-mix(in srgb, CanvasText 20%, transparent);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+  button:hover { background: color-mix(in srgb, CanvasText 8%, transparent); }
+  hr {
+    border: none;
+    border-top: 1px solid color-mix(in srgb, CanvasText 12%, transparent);
+    margin: 10px 0;
+  }
+  .hint {
+    font-size: 11px;
+    opacity: 0.6;
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+  <h1>🐾 DeskPet</h1>
+
+  <div class="row">
+    <label><input type="checkbox" id="enabled"> Enabled</label>
+  </div>
+
+  <div class="row">
+    <span>Frequency</span>
+    <select id="frequency">
+      <option value="ultraOften">Ultra Often</option>
+      <option value="often">Often</option>
+      <option value="normal">Normal</option>
+      <option value="rare">Rare</option>
+    </select>
+  </div>
+
+  <fieldset>
+    <legend>Animals</legend>
+    <div class="species-row"><label><input type="checkbox" id="species-cat"> Cat</label></div>
+    <div class="species-row"><label><input type="checkbox" id="species-dog"> Dog</label></div>
+  </fieldset>
+
+  <button id="peekNow">Peek Now</button>
+
+  <div class="hint">Peeks in from the edge of whichever tab you're looking at.</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

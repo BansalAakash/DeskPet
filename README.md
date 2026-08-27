@@ -7,6 +7,9 @@ paw. That's the whole app.
 It lives in the menu bar (🐾) — no Dock icon, no window, no account, no
 settings to configure.
 
+Also comes as a [Chrome extension](#chrome-extension) that does the same
+thing inside your browser, on whichever tab you're looking at.
+
 ## Download
 
 Needs macOS 13 or later.
@@ -47,12 +50,29 @@ macOS raises no security warning — no right-click workaround needed.
 
 Quit from the menu, then drag `DeskPet.app` to the Trash.
 
+## Chrome extension
+
+The same idea, inside your browser: a cat or a dog peeks in from the edge
+of whichever tab you're on, click it for a gesture. Not published to the
+Chrome Web Store, so it installs as an unpacked extension:
+
+1. Download [`extension.zip`](https://github.com/BansalAakash/DeskPet/releases/latest/download/extension.zip)
+   from the [latest release](https://github.com/BansalAakash/DeskPet/releases/latest)
+   and unzip it.
+2. Open `chrome://extensions` in Chrome and turn on **Developer mode**
+   (top right).
+3. Click **Load unpacked** and select the unzipped folder.
+
+That's it — no build step, no dependencies. See
+[`extension/README.md`](extension/README.md) for how it works and where
+it deliberately differs from the macOS app.
+
 ## The menu
 
 | Item | What it does |
 | --- | --- |
 | **Enabled** | Pause or resume without quitting |
-| **Frequency** | Ultra Often (5s), Often (15–45s), Normal (45–120s), Rare (2–5 min) |
+| **Frequency** | Ultra Often (~5–7s), Often (15–45s), Normal (45–120s), Rare (2–5 min) |
 | **Animals** | Turn individual characters on or off |
 | **Peek Now** | Show one right away — replaces any that's already out |
 | **Open at Login** | Start automatically with your Mac |

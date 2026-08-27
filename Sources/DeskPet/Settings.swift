@@ -15,10 +15,17 @@ enum Frequency: String, CaseIterable {
         }
     }
 
-    /// Range of seconds to wait before the next peek.
+    /// Range of seconds to wait *after a peek disappears* before the next
+    /// one starts — not the same as time between one peek appearing and
+    /// the next appearing, since a peek itself is on screen for ~4.5-6.25s
+    /// (see PeekWindowController's slide/hold durations). At the slower
+    /// bands that difference is invisible; at 5s it would double the felt
+    /// cadence, which is why Ultra Often's gap is much shorter than its
+    /// name's number would suggest — it's tuned for how often a peek
+    /// actually shows up, roughly every 5-7s end to end.
     var delayRange: ClosedRange<Double> {
         switch self {
-        case .ultraOften: return 5...5
+        case .ultraOften: return 1...1
         case .often: return 15...45
         case .normal: return 45...120
         case .rare: return 120...300

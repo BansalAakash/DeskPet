@@ -13,8 +13,15 @@
   if (window.__deskpetInjected) return;
   window.__deskpetInjected = true;
 
+  // Each range is the gap *after a peek disappears* before the next one
+  // starts, not time between one appearing and the next appearing — a
+  // peek itself is on screen for ~4.5-6.25s (see HOLD_RANGE_MS below).
+  // That's invisible at the slower bands, but at 5s it would double the
+  // felt cadence, so Ultra Often's gap is much shorter than its name's
+  // number suggests — tuned for a peek actually showing up roughly every
+  // 5-7s end to end, not a literal 5s gap on top of its own runtime.
   const FREQUENCY_BANDS = {
-    ultraOften: [5000, 5000],
+    ultraOften: [1000, 1000],
     often: [15000, 45000],
     normal: [45000, 120000],
     rare: [120000, 300000]

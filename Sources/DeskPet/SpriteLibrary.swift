@@ -86,6 +86,27 @@ final class SpriteLibrary {
         "\(speciesID)|\(face.rawValue)"
     }
 
+    /// Checks the sprite resource bundle can actually be found, without
+    /// touching `Bundle.module` — that accessor calls `fatalError()` on a
+    /// miss, which is exactly the crash this guards against.
+    ///
+    /// SwiftPM's generated accessor only looks for `DeskPet_DeskPet.bundle`
+    /// next to `Bundle.main.bundleURL` (the `.app` root) or at a
+    /// dev-machine-only fallback baked in at build time; it never checks
+    /// `Contents/Resources`, which is where `build_app.sh` actually copies
+    /// it. So a correctly-assembled `.app` can still fail the generated
+    /// lookup — check both locations ourselves.
+    static func resourcesAvailable() -> Bool {
+        let fm = FileManager.default
+        let atBundleRoot = Bundle.main.bundleURL.appendingPathComponent("DeskPet_DeskPet.bundle")
+        if fm.fileExists(atPath: atBundleRoot.path) { return true }
+        if let resourceURL = Bundle.main.resourceURL {
+            let atResources = resourceURL.appendingPathComponent("DeskPet_DeskPet.bundle")
+            if fm.fileExists(atPath: atResources.path) { return true }
+        }
+        return false
+    }
+
     func frames(for speciesID: String, face: FaceVariant) -> [NSImage] {
         idleFrames[Self.key(speciesID, face)] ?? []
     }

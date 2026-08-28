@@ -15,6 +15,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             return
         }
 
+        guard SpriteLibrary.resourcesAvailable() else {
+            // Without this, the first missing-bundle failure happens deep
+            // inside SpriteLibrary's lazy init, triggered by a background
+            // peek timer minutes later — a silent crash with no dialog.
+            // Fail loud and immediately instead.
+            let alert = NSAlert()
+            alert.alertStyle = .critical
+            alert.messageText = "DeskPet can't find its sprite images"
+            alert.informativeText = "The DeskPet_DeskPet.bundle is missing from this app copy. Try reinstalling DeskPet."
+            alert.runModal()
+            NSApp.terminate(nil)
+            return
+        }
+
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         if let button = item.button {
             let image = NSImage(systemSymbolName: "pawprint.fill", accessibilityDescription: "DeskPet")

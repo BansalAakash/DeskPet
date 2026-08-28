@@ -24,6 +24,7 @@ final class PeekWindowController: NSObject {
 
     private var leaveWork: DispatchWorkItem?
     private var leanWork: DispatchWorkItem?
+    private var gestureStartWork: DispatchWorkItem?
     private var gestureFrameCount = 0
     private var leaveDeadline = Date.distantPast
     private var finished = false
@@ -163,10 +164,13 @@ final class PeekWindowController: NSObject {
 
         let id = requestCounter
         leanWork?.cancel()
-        DispatchQueue.main.asyncAfter(deadline: .now() + leanDuration) { [weak self] in
+        gestureStartWork?.cancel()
+        let startItem = DispatchWorkItem { [weak self] in
             guard let self, !self.finished else { return }
             self.state.request = GestureRequest(gesture: gesture, immediate: true, id: id)
         }
+        gestureStartWork = startItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + leanDuration, execute: startItem)
 
         let settleBack = leanDuration + gestureDuration + 0.2
         let item = DispatchWorkItem { [weak self] in
@@ -203,6 +207,7 @@ final class PeekWindowController: NSObject {
         guard !finished else { return }
         leaveWork?.cancel()
         leanWork?.cancel()
+        gestureStartWork?.cancel()
         beginLeaving()
     }
 
@@ -251,6 +256,8 @@ final class PeekWindowController: NSObject {
         leaveWork = nil
         leanWork?.cancel()
         leanWork = nil
+        gestureStartWork?.cancel()
+        gestureStartWork = nil
         NotificationCenter.default.removeObserver(self)
         panel?.orderOut(nil)
         panel = nil

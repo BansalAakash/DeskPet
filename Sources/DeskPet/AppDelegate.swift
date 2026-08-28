@@ -1,7 +1,10 @@
 import AppKit
 import ServiceManagement
+import os
 
 final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
+    private static let logger = Logger(subsystem: "com.aakash.deskpet", category: "AppDelegate")
+
     private var statusItem: NSStatusItem?
     private var launchAtLoginItem: NSMenuItem?
 
@@ -180,7 +183,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 try SMAppService.mainApp.register()
             }
         } catch {
-            NSLog("DeskPet: could not change the login item — \(error.localizedDescription)")
+            Self.logger.error("could not change the login item: \(error.localizedDescription, privacy: .public)")
+            let alert = NSAlert()
+            alert.alertStyle = .warning
+            alert.messageText = "Couldn't change \u{201c}Open at Login\u{201d}"
+            alert.informativeText = error.localizedDescription
+            alert.runModal()
         }
         refreshLaunchAtLogin()
     }

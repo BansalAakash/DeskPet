@@ -1,4 +1,5 @@
 import AppKit
+import os
 
 /// A small motion a character can perform while it's peeked out.
 ///
@@ -55,6 +56,13 @@ final class SpriteLibrary {
 
     /// On-screen height of a character, in points.
     private static let targetHeight: CGFloat = 97.5
+
+    /// No sequence ships anywhere near this many frames; it's just a
+    /// backstop so a scan can't run away if `Bundle.module` ever behaved
+    /// unexpectedly.
+    private static let maxFramesPerSequence = 100
+
+    private static let logger = Logger(subsystem: "com.aakash.deskpet", category: "SpriteLibrary")
 
     private init() {
         for species in Species.all {
@@ -191,14 +199,17 @@ final class SpriteLibrary {
     /// Loads every `<prefix>_NN.png` in the species/face subfolder, in order.
     private static func loadSequence(species: String, face: FaceVariant, prefix: String) -> [NSImage] {
         var frames: [NSImage] = []
-        for i in 0..<100 {
+        for i in 0..<maxFramesPerSequence {
             let name = String(format: "%@_%02d", prefix, i)
             guard let url = Bundle.module.url(
                 forResource: name,
                 withExtension: "png",
                 subdirectory: "species/\(species)/\(face.rawValue)"
             ) else { break }
-            guard let image = NSImage(contentsOf: url) else { continue }
+            guard let image = NSImage(contentsOf: url) else {
+                logger.error("Could not decode sprite frame at \(url.path, privacy: .public)")
+                continue
+            }
             frames.append(image)
         }
         return frames

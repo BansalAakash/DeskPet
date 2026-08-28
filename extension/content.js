@@ -166,10 +166,12 @@
     spawnPeek();
   }
 
+  // null when the user has turned every species off — that's a request to
+  // show nothing, not a cue to fall back to showing everything.
   function pickSpecies() {
     const enabled = SPECIES_IDS.filter((id) => !settings.disabledSpecies.includes(id));
-    const pool = enabled.length > 0 ? enabled : SPECIES_IDS;
-    return pool[Math.floor(Math.random() * pool.length)];
+    if (enabled.length === 0) return null;
+    return enabled[Math.floor(Math.random() * enabled.length)];
   }
 
   function pickEdge() {
@@ -207,6 +209,7 @@
 
   function spawnPeek() {
     const speciesId = pickSpecies();
+    if (!speciesId) { scheduleNext(); return; }
     const face = FACES[Math.floor(Math.random() * FACES.length)];
     const edge = pickEdge();
     lastEdge = edge;

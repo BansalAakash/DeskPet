@@ -120,7 +120,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    opacity: 0.55;
+    opacity: 0.78;
   }
 
   .dp-segmented {
@@ -190,7 +190,7 @@
     font-size: 12px;
     font-weight: 500;
     color: var(--ink);
-    opacity: 0.45;
+    opacity: 0.78;
     transition: opacity 0.12s ease, border-color 0.12s ease;
   }
   .dp-chip span::before {
@@ -237,7 +237,7 @@
     margin: 10px 2px 0;
     font-size: 11px;
     line-height: 1.4;
-    opacity: 0.5;
+    opacity: 0.72;
   }
 </style>
 </head>
@@ -248,7 +248,7 @@
         <span class="dp-emoji" aria-hidden="true">🐾</span>
         <span class="dp-title-text">DeskPet</span>
       </div>
-      <input type="checkbox" id="enabled" class="dp-enabled" title="Enabled">
+      <input type="checkbox" id="enabled" class="dp-enabled" title="Enabled" aria-label="Enable DeskPet">
     </div>
     <div class="dp-peek">
       <img id="peekImg" class="dp-peek-img" alt="" draggable="false">
@@ -280,7 +280,7 @@
 
     <section class="dp-section">
       <h2 class="dp-label">Animals</h2>
-      <div class="dp-chips">
+      <div class="dp-chips" role="group" aria-label="Animals">
         <label class="dp-chip dp-chip-cat">
           <input type="checkbox" id="species-cat">
           <span>Cat</span>

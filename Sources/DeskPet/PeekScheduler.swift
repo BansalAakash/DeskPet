@@ -105,8 +105,9 @@ final class PeekScheduler {
         return choices.randomElement() ?? PeekEdge.allCases.randomElement()
     }
 
+    /// `nil` when the user has turned every species off — that's a request
+    /// to show nothing, not a cue to fall back to showing everything.
     private func speciesToShow() -> Species? {
-        let enabled = Settings.shared.enabledSpecies
-        return enabled.isEmpty ? Species.all.randomElement() : enabled.randomElement()
+        Settings.shared.enabledSpecies.randomElement()
     }
 }

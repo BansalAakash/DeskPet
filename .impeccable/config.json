@@ -14,7 +14,7 @@
       },
       {
         "rule": "flat-type-hierarchy",
-        "value": "sizes: 10px, 13px, 17px (ratio 1.7:1)",
+        "value": "Sizes: 10px, 13px, 17px (ratio 1.7:1)",
         "files": [
           "extension/popup.html"
         ],

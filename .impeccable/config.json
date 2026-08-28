@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-08-28T07:14:29.230Z",
         "reason": "peekImg src is set at runtime by popup.js:38, not a static missing image"
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "sizes: 10px, 13px, 17px (ratio 1.7:1)",
+        "files": [
+          "extension/popup.html"
+        ],
+        "createdAt": "2026-08-28T07:31:09.189Z",
+        "reason": "detector running in DEGRADED regex-only mode (parser deps missing); manually verified 10/13/17px scale has 1.3 and 1.31 stepwise ratios, both above the stated 1.25 threshold"
       }
     ]
   }

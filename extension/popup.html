@@ -13,7 +13,9 @@
     --cat: #4fb2d6;
     --dog: #dd9138;
     --line: rgba(33, 31, 28, 0.12);
+    --line-hover: rgba(33, 31, 28, 0.28);
     --focus: #4a90d9;
+    --cta-shadow: rgba(239, 143, 180, 0.4);
     color-scheme: light dark;
   }
   @media (prefers-color-scheme: dark) {
@@ -26,6 +28,8 @@
       --cat: #6fcdf0;
       --dog: #eaa855;
       --line: rgba(243, 236, 220, 0.16);
+      --line-hover: rgba(243, 236, 220, 0.32);
+      --cta-shadow: rgba(242, 160, 194, 0.3);
     }
   }
 
@@ -156,6 +160,9 @@
     border-color: var(--ink);
     color: var(--paper);
   }
+  .dp-seg input:not(:checked):hover ~ span {
+    border-color: var(--line-hover);
+  }
   .dp-seg input:focus-visible ~ span {
     outline: 2px solid var(--focus);
     outline-offset: 1px;
@@ -202,6 +209,10 @@
   }
   .dp-chip-cat span { --dot: var(--cat); }
   .dp-chip-dog span { --dot: var(--dog); }
+  .dp-chip input:not(:checked):hover ~ span {
+    opacity: 0.92;
+    border-color: var(--line-hover);
+  }
   .dp-chip input:checked ~ span {
     opacity: 1;
     border-color: var(--dot);
@@ -224,10 +235,14 @@
     font-weight: 700;
     font-size: 13px;
     cursor: pointer;
-    transition: transform 0.08s ease, filter 0.12s ease;
+    box-shadow: 0 3px 8px var(--cta-shadow);
+    transition: transform 0.08s ease, filter 0.12s ease, box-shadow 0.08s ease;
   }
   .dp-cta:hover { filter: brightness(1.05); }
-  .dp-cta:active { transform: scale(0.98); }
+  .dp-cta:active {
+    transform: scale(0.98);
+    box-shadow: 0 1px 4px var(--cta-shadow);
+  }
   .dp-cta:focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 2px;

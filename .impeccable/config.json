@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "extension/popup.html"
+        ],
+        "createdAt": "2026-08-28T07:14:29.230Z",
+        "reason": "peekImg src is set at runtime by popup.js:38, not a static missing image"
+      }
+    ]
+  }
+}
